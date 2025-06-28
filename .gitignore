@@ -6,3 +6,4 @@
 /MediatorCore/bin/Debug/net8.0
 /MediatorCore/obj
 *.sln
+/.vs
