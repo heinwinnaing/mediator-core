@@ -18,7 +18,7 @@ internal sealed class Mediator
         Type handerType = typeof(IRequestHandler<,>).MakeGenericType(requestType, responseType);
 
         dynamic? handler = _serviceProvider.GetService(handerType);
-        _ = handler ?? throw new InvalidOperationException($"Handler not found for request of type {requestType}");
+        _ = handler ?? throw new InvalidOperationException($"{handerType}: Handler not found");
 
         Type loggingBehaviorInterface = typeof(IPipelineBehavior<,>)
             .MakeGenericType(requestType, responseType);
@@ -34,5 +34,16 @@ internal sealed class Mediator
         }
 
         return await next();
+    }
+
+    public async Task Publish(IEvent @event, CancellationToken cancellationToken = default)
+    {
+        Type eventType = @event.GetType();
+        Type handlerType = typeof(IEventHandler<>).MakeGenericType(eventType);
+
+        dynamic? handler = _serviceProvider.GetRequiredService(handlerType);
+        _ = handler ?? throw new InvalidOperationException($"{handlerType}: Event Handler not found");
+
+        await handler.Handle((dynamic)@event, cancellationToken);
     }
 }
