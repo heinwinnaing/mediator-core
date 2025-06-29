@@ -28,5 +28,22 @@ internal sealed class MediatorExtensions
         _services
              .TryAddEnumerable(validators);
         return _services;
-    }    
+    }
+
+    public IServiceCollection AddEventHandlers(Assembly fromAssembly)
+    {
+        var eventHandlers = fromAssembly
+            .GetTypes()
+            .Where(type =>
+                type is { IsClass: true, IsAbstract: false, IsInterface: false, IsGenericTypeDefinition: false }
+            )
+            .Where(type => type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEventHandler<>)))
+            .Select(validator => ServiceDescriptor.Scoped(
+                service: validator.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEventHandler<>)),
+                implementationType: validator));
+
+        _services
+            .TryAddEnumerable(eventHandlers);
+        return _services;
+    }
 }
