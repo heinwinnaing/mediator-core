@@ -22,8 +22,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Get Info
-        run: echo '${{ github.actor }} ${{ env.NUGET_SOURCE }}'
+      - name: Get Package Version
+        id: package_version
+        uses: battila7/get-version-action@v4
+
+      - name: Set Package Version Env Variable
+        run: echo "PACKAGE_VERSION=${{ steps.version.outputs.version-without-v }}" >> $GITHUB_ENV
 
       - name: Add GitHub NuGet Source
         run: |
