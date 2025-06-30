@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TEST_PROJECT_PATH: 'MediatorCore/MediatorCore.Test.csproj'
+  TEST_PROJECT_PATH: 'MediatorCore.Test/MediatorCore.Test.csproj'
 
 jobs:
   build-and-test:
