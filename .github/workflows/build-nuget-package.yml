@@ -19,7 +19,7 @@ jobs:
           dotnet-version: '8.0.x'  # Use your desired SDK version
 
       - name: Restore dependencies
-        run: dotnet restore MediatorCore/MediatorCore.csproj
+        run: dotnet restore ./MediatorCore/MediatorCore.csproj
 
       - name: Build the project
-        run: dotnet build MediatorCore/MediatorCore.csproj --configuration Release --no-restore
+        run: dotnet build ./MediatorCore/MediatorCore.csproj --configuration Release --no-restore
