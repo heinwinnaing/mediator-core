@@ -7,3 +7,4 @@
 /MediatorCore/obj
 *.sln
 /.vs
+/MediatorCore/bin/Debug
