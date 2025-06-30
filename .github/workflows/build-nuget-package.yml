@@ -2,7 +2,7 @@ name: Publish to GitHub Packages
 
 env:
   PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
-  NUGET_SOURCE: 'https://nuget.pkg.github.com/heinwinnaing/index.json'
+  NUGET_SOURCE: 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json'
   
 on:
   push:
@@ -23,8 +23,8 @@ jobs:
           dotnet-version: '8.0.x'  # Use your desired SDK version
           # source-url: ${{ env.NUGET_SOURCE }}
 
-      - name: Print Info
-        run: echo ${{ github.actor }}
+      - name: User Info
+        run: echo '${{ github.actor }} ${{ env.NUGET_SOURCE }}'
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.PROJECT_PATH }}
@@ -34,4 +34,13 @@ jobs:
 
       - name: Pack the project
         run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ./nupkg
-        
+
+      - name: Add GitHub NuGet Source
+        run: dotnet nuget add source ${{ env.NUGET_SOURCE }} \
+             --name github \
+             --username ${{ github.actor }} \
+             --password ${{ secrets.GITHUB_TOKEN }} \
+             --store-password-in-clear-text
+
+      - name: Push to GitHub Packages
+        run: dotnet nuget push ./nupkg/*.nupkg --source github --api-key ${{ secrets.GITHUB_TOKEN }}        
