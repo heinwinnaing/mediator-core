@@ -3,9 +3,18 @@ name: Publish to GitHub Packages
 env:
   PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
   NUGET_SOURCE: 'https://nuget.pkg.github.com/heinwinnaing/index.json'
+  
+# on:
+#   push:
+#     tags:
+#       - 'v*'  # Triggers on version tags like v1.0.0
 
 on:
   workflow_dispatch:
+    inputs:
+      release_version: 
+        required: true
+        description: 'Specific version to use for the package (e.g., 1.0.0, 1.0.0-preview)'
 
 jobs:
   publish:
