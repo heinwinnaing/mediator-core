@@ -25,3 +25,9 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build the project
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      - name: Pack the project
+        run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ./nupkg
