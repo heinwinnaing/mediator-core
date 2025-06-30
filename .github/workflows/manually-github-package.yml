@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Manually Publish to GitHub Packages
 
 env:
   PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
