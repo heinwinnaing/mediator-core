@@ -24,8 +24,7 @@ jobs:
           # source-url: ${{ env.NUGET_SOURCE }}
 
       - name: Print Info
-        run: |
-          echo: "${{ github.actor }} ${{ secrets.NUGET_PACKAGE_TOKEN }}"
+        run: echo ${{ github.actor }}
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.PROJECT_PATH }}
