@@ -43,7 +43,7 @@ jobs:
         run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
 
       - name: Pack the project
-        run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ./nupkg
+        run: dotnet pack ${{ env.PROJECT_PATH }} -p:PackageVersion=${{ steps.package_version.outputs.version-without-v }} --configuration Release --no-build --output ./nupkg
 
       - name: Push to GitHub Packages
         run: dotnet nuget push ./nupkg/*.nupkg --source ${{ env.NUGET_SOURCE }} --api-key ${{ secrets.NUGET_PACKAGE_TOKEN }}
