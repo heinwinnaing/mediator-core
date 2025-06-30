@@ -22,7 +22,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: User Info
+      - name: Get Info
         run: echo '${{ github.actor }} ${{ env.NUGET_SOURCE }}'
 
       - name: Add GitHub NuGet Source
