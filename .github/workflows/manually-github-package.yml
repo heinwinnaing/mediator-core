@@ -7,9 +7,9 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      release_version: 
+      package_version: 
         required: true
-        description: 'Specific version to use for the package (e.g., 1.0.0, 1.0.0-preview, 1.0.0-preview.1)'
+        description: 'Package version (e.g., 1.0.0, 1.0.0-preview, 1.0.0-preview.1)'
 
 jobs:
   publish:
@@ -18,12 +18,12 @@ jobs:
     steps:
       - name: Show Inputs
         run: |
-          echo "Version: ${{ github.event.inputs.release_version }}"
+          echo "Version: ${{ github.event.inputs.package_version }}"
 
       - name: Validate Inputs
         run: |
-          if [[ ! "${{ github.event.inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?$ ]]; then
-            echo "❌ Invalid version format. Use semver like 1.0.0 or 1.0.0-preview.1"
+          if [[ ! "${{ github.event.inputs.package_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?$ ]]; then
+            echo "❌ Invalid package version format. Use semver like 1.0.0 or 1.0.0-preview.1"
             exit 1
           fi
         
