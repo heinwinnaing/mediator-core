@@ -1,0 +1,32 @@
+name: Publish to GitHub Packages
+
+env:
+  PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
+  NUGET_SOURCE: 'https://nuget.pkg.github.com/heinwinnaing/index.json'
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_version: 
+        required: true
+        description: 'Specific version to use for the package (e.g., 1.0.0, 1.0.0-preview)'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate Release Version Input
+        # This step runs only if a release_version input is provided via workflow_dispatch.
+        if: github.event.inputs.release_version != '' && github.event.inputs.release_version != null
+        run: |
+          VERSION="${{ github.event.inputs.release_version }}"
+          # Regex for basic semantic versioning (e.g., 1.0.0, 1.0.0-beta.1, 1.0.0-rc)
+          if ! echo "$VERSION" | grep -E '^\d+\.\d+\.\d+(-[a-zA-Z0-9\.-]+)?$' > /dev/null; then
+            echo "::error::Invalid 'release_version' format. Expected semantic version (e.g., 1.0.0 or 1.0.0-beta)."
+            exit 1 # Fail the workflow if validation fails
+          else
+            echo "Release version '$VERSION' format is valid."
+          fi
+    
+        
