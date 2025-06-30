@@ -1,4 +1,4 @@
-name: Tag Publish to GitHub Packages
+name: Automatically Release GitHub Packages
 
 env:
   PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
