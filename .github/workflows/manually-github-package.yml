@@ -10,6 +10,11 @@ on:
       release_version: 
         required: true
         description: 'Specific version to use for the package (e.g., 1.0.0, 1.0.0-preview)'
+      release_type:
+        required: true
+        default: true
+        type: boolean
+        description: 'Is Preview'
 
 jobs:
   publish:
