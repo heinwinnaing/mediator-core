@@ -3,5 +3,5 @@
 public interface IEventHandler<T>
     where T : IEvent
 {
-    Task Handle(IEvent @event, CancellationToken cancellationToken = default);
+    Task Handle(T @event, CancellationToken cancellationToken = default);
 }
