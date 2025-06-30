@@ -1,5 +1,8 @@
 name: Publish to GitHub Packages
 
+env:
+  PROJECT_PATH: 'MediatorCore/MediatorCore.csproj'
+  
 on:
   push:
     tags:
@@ -19,5 +22,4 @@ jobs:
           dotnet-version: '8.0.x'  # Use your desired SDK version
 
       - name: Restore dependencies
-        working-directory: ./MediatorCore
-        run: dotnet restore MediatorCore.csproj
+        run: dotnet restore
