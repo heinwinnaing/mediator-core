@@ -23,7 +23,33 @@ jobs:
       - name: Validate Inputs
         run: |
           if [[ ! "${{ github.event.inputs.package_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-preview\.[0-9]+)?$ ]]; then
-            echo "❌ Invalid package version format. Use semver like 1.0.0 or 1.0.0-preview.1"
+            echo "❌ Invalid package version format. Use semver like 1.0.0 or 1.0.0-preview or 1.0.0-preview.1"
             exit 1
           fi
         
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Add GitHub NuGet Source
+        run: |
+          dotnet nuget add source ${{ env.NUGET_SOURCE }} \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.NUGET_PACKAGE_TOKEN }}" \
+            --store-password-in-clear-text
+
+      - name: Restore dependencies
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build the project
+        run: dotnet build ${{ env.PROJECT_PATH }} --configuration Release --no-restore
+
+      - name: Pack the project
+        run: dotnet pack ${{ env.PROJECT_PATH }} -p:PackageVersion=${{ github.event.inputs.package_version }} --configuration Release --no-build --output ./nupkg
+
+      - name: Push to GitHub Packages
+        run: dotnet nuget push ./nupkg/*.nupkg --source ${{ env.NUGET_SOURCE }} --api-key ${{ secrets.NUGET_PACKAGE_TOKEN }}
