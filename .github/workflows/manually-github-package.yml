@@ -21,6 +21,7 @@ jobs:
         if: github.event.inputs.release_version != '' && github.event.inputs.release_version != null
         run: |
           VERSION="${{ github.event.inputs.release_version }}"
+          echo VERSION
           # Regex for basic semantic versioning (e.g., 1.0.0, 1.0.0-beta.1, 1.0.0-rc)
           if ! echo "$VERSION" | grep -E '^\d+\.\d+\.\d+(-[a-zA-Z0-9\.-]+)?$' > /dev/null; then
             echo "::error::Invalid 'release_version' format. Expected semantic version (e.g., 1.0.0 or 1.0.0-beta)."
