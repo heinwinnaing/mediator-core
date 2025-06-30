@@ -23,6 +23,10 @@ jobs:
           dotnet-version: '8.0.x'  # Use your desired SDK version
           # source-url: ${{ env.NUGET_SOURCE }}
 
+      - name: Print Info
+        run: |
+          echo: "${{ github.actor }} ${{ secrets.NUGET_PACKAGE_TOKEN }}"
+
       - name: Restore dependencies
         run: dotnet restore ${{ env.PROJECT_PATH }}
 
@@ -31,3 +35,4 @@ jobs:
 
       - name: Pack the project
         run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ./nupkg
+        
