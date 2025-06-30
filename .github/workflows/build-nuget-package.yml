@@ -17,13 +17,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
       - name: User Info
         run: echo '${{ github.actor }} ${{ env.NUGET_SOURCE }}'
+
+      - name: Add GitHub NuGet Source
+        run: |
+          dotnet nuget add source ${{ env.NUGET_SOURCE }} \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.NUGET_PACKAGE_TOKEN }}" \
+            --store-password-in-clear-text
 
       - name: Restore dependencies
         run: dotnet restore ${{ env.PROJECT_PATH }}
@@ -33,10 +40,4 @@ jobs:
 
       - name: Pack the project
         run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --no-build --output ./nupkg
-
-      - name: Add GitHub NuGet Source
-        run: dotnet nuget add source \
-             --name github ${{ env.NUGET_SOURCE }}\
-             --username ${{ github.actor }} \
-             --password ${{ secrets.GITHUB_TOKEN }} \
-             --store-password-in-clear-text      
+        
