@@ -1,0 +1,29 @@
+name: Run xUnit Tests
+
+on:
+  workflow_dispatch:
+
+env:
+  TEST_PROJECT_PATH: 'MediatorCore/MediatorCore.Test.csproj'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' # Change based on your project version
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.TEST_PROJECT_PATH }}
+
+    - name: Build solution
+      run: dotnet build ${{ env.TEST_PROJECT_PATH }} --no-restore --configuration Release
+
+    - name: Run xUnit tests
+      run: dotnet test ${{ env.TEST_PROJECT_PATH }} --no-build --configuration Release --verbosity normal
