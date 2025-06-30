@@ -26,9 +26,6 @@ jobs:
         id: package_version
         uses: battila7/get-version-action@v2
 
-      - name: Set Package Version Env Variable
-        run: echo "PACKAGE_VERSION=${{ steps.package_version.outputs.version-without-v }}" >> $GITHUB_ENV
-
       - name: Add GitHub NuGet Source
         run: |
           dotnet nuget add source ${{ env.NUGET_SOURCE }} \
