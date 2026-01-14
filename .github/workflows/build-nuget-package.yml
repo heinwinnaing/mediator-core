@@ -24,7 +24,7 @@ jobs:
 
       - name: Get Package Version
         id: package_version
-        uses: battila7/get-version-action@v2
+        uses: battila7/get-version-action@d97fbc34ceb64d1f5d95f4dfd6dce33521ccccf5 # v2
 
       - name: Add GitHub NuGet Source
         run: |
